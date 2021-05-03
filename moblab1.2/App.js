@@ -14,6 +14,9 @@ function GeneralScreen() {
         <Text>
         ЗК ИП-8505
         </Text>
+        <Text>
+        Lab 1.2
+        </Text>
     </View>
   );
 }
