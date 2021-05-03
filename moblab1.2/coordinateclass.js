@@ -10,7 +10,7 @@ class CoordinateGV {
 
         switch (direction) {
             case 'latitude':
-                if (!(degrees >= -90 && degrees <= 90))
+                if (!(degrees >= -90 || degrees <= 90))
                     throw 'Entered degrees values are wrong';
                 if ((degrees == 90 && minutes > 0 && seconds > 0) ||
                     (degrees == -90 && minutes > 0 && seconds > 0))
@@ -47,7 +47,7 @@ class CoordinateGV {
         this.direction === 'latitude' 
         ? (this.degrees >= 0 ? route = "N" : route = "S") 
         : (this.degrees >= 0 ? route = "E" : route = "W");
-        return `${this.degrees}°${this.minutes}′${this.seconds}″ ${route}`
+        return `${Math.abs(this.degrees)}°${this.minutes}′${this.seconds}″ ${route}`
     }
 
     toDecimal = () => {
@@ -55,23 +55,30 @@ class CoordinateGV {
         this.direction === 'latitude' 
         ? (this.degrees >= 0 ? route = "N" : route = "S") 
         : (this.degrees >= 0 ? route = "E" : route = "W");
-        return `${this.degrees + this.minutes / 60 + this.seconds / 3600}″ ${route}`
+        return `${Math.abs(this.degrees) + this.minutes / 60 + this.seconds / 3600}″ ${route}`
     }
 
     middleCoordinate = ({ direction, degrees, minutes, seconds }) =>
-        this.direction === direction 
-        ? CoordinateGV.customValues(
+        this.direction === direction  ? ((this.degrees >= 0 && degrees >= 0) ?        
+         CoordinateGV.customValues(
             direction,
-            eval((this.degrees + degrees)/2),
-            eval((this.minutes + minutes)/2),
-            eval((this.seconds + seconds)/2),
+            (this.degrees + degrees)/2,
+            (this.minutes + minutes)/2,
+            (this.seconds + seconds)/2
             )
+         : CoordinateGV.customValues(
+            direction,
+            (this.degrees + degrees)/2,
+            (this.minutes - minutes)/2,
+            (this.seconds - seconds)/2
+            ))   
+
         : null
 }
 
 const coord0 = new CoordinateGV
-const coord1 = CoordinateGV.customValues("latitude", 23, 37, 20);
-const coord2 = CoordinateGV.customValues("latitude", 70, 59, 10);
+const coord1 = CoordinateGV.customValues("latitude", -35, 10, 40);
+const coord2 = CoordinateGV.customValues("latitude", 20, 10, 40);
 const coord3 = coord1.middleCoordinate(coord2);
 console.log("'First coordinate:'",coord1.toDecimal(), coord1.toString())
 console.log("'Second coordinate:'",coord2.toDecimal(), coord2.toString())
