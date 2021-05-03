@@ -10,7 +10,7 @@ class CoordinateGV {
 
         switch (direction) {
             case 'latitude':
-                if (!(degrees >= -90 || degrees <= 90))
+                if (!(degrees >= -90 && degrees <= 90))
                     throw 'Entered degrees values are wrong';
                 if ((degrees == 90 && minutes > 0 && seconds > 0) ||
                     (degrees == -90 && minutes > 0 && seconds > 0))
