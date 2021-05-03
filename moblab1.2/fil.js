@@ -45,7 +45,6 @@ for (const group in studentsGroups) {
 console.log('Завдання 2')
 console.log(studentPoints);
 
-
 let sumPoints = [];
 
 for (const group in studentPoints) {
